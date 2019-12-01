@@ -86,17 +86,16 @@ void introFunction() {
                  "Source: https://www.esportsearnings.com/games/534-fortnite/top-players" << std::endl;
 }
 
-void readFile(std::string playerID[], double earning[], const int S){
+void readFile(std::string name[], double winning[], const int ARRAYSIZE){
+    std::ifstream iFile;
     int count = 0;
-    std::ifstream inFile;
-    inFile.open("fortnite.txt");
-    for(int i = 0; i < S; i++){
-        inFile >> earning[i] >> playerID[i];
 
-    //while (count < S && inFile >> playerID[count] >> earning[count]) {
-        //count++;
+    iFile.open("/media/linuxgorilla/5f8be082-3ff7-4e6b-b17b-107de17361cf/C++/Project3/fortnite.txt");
+
+    while(count < ARRAYSIZE && iFile >> name[count] >> winning[count]){
+        std::cout << name[count] << " " << winning[count] << std::endl;
+        count++;
     }
-    inFile.close();
 }
 void menuFunction(int & select)
     {
@@ -108,11 +107,7 @@ void menuFunction(int & select)
                      "(4) EXIT THIS PROGRAM" << std::endl;
         std::cout << "Enter your choice: " << std::endl;
         std::cin >> select;
-        while (select < 1 || select > 4 || std::cin.fail()) {
-            if (std::cin.fail()) {
-                std::cin.clear();
-                std::cin.ignore(100, '\n');
-            }
+        while (select < 1 || select > 4) {
             std::cout << "That is an incorrect choice. Please try again. " << std::endl;
             std::cin >> select;
         }
