@@ -3,6 +3,11 @@
 #include <string>
 #include <vector>
 #include <iomanip>
+
+const int SIZE = 100;
+std::string names[SIZE];
+double earning[SIZE];
+
 void introFunction();
 void readFile(std::string[], double[], const int);
 void menuFunction(int &);
@@ -11,12 +16,10 @@ double swap(double &, double &);
 void totalAverage(double[], int);
 void sortNumbers(double[], int);
 double swap(double &, double &);
-int binarySearch(const std::vector<std::string>&, std::string);
+std::string binarySearch(std::string[], double[], int);
 
 int main() {
-    const int SIZE = 100;
-    std::string names[SIZE];
-    double earning[SIZE];
+
     int choice = 0;                     //for user menu.
     double total = 0.0;
     double average = 0.0;
@@ -32,47 +35,50 @@ int main() {
     std::cout << std::endl;
     readFile(names, earning, SIZE);
     do
-        {
+    {
 
-     menuFunction(choice);
-     if (choice == 1) {
-             sortNumbers(earning, SIZE);
+        menuFunction(choice);
+        if (choice == 1) {
+            sortNumbers(earning, SIZE);
 
-         swap(num1, num2);
+            swap(num1, num2);
 
-         std::cout << "The first player in the Top 100 list is: " << names[1] << std::endl;
-         std::cout << "The total winnings for this player: $" << earning[1] << std::endl;
-         std::cout << std::endl;
-         std::cout << "The last player in the Top 100 list is: " << names[0] << std::endl;
-         std::cout << "The total winnings for this player: $" << earning[0] << std::endl;
-         std::cout <<std::endl;
-     }
-            else if (choice == 2) {
-         totalAverage(earning, SIZE);
-     }
-            else if(choice == 3) {
-         std::string temp = "";
-         std::vector<std::string>theVector;
+            std::cout << "The first player in the Top 100 list is: " << names[1] << std::endl;
+            std::cout << "The total winnings for this player: $" << earning[1] << std::endl;
+            std::cout << std::endl;
+            sortNumbers(earning, SIZE);
 
-         std::vector<std::string>loadvector(theVector);
+            swap(num1, num2);
+            std::cout << "The last player in the Top 100 list is: " << names[0] << std::endl;
+            std::cout << "The total winnings for this player: $" << earning[0] << std::endl;
+            std::cout <<std::endl;
+        }
+        else if (choice == 2) {
+            totalAverage(earning, SIZE);
+        }
+        else if(choice == 3) {
+            std::string temp = "";
+            std::vector<std::string>theVector;
 
-         int position;
+            std::vector<std::string>loadvector(theVector);
 
-         std::cout <<"Enter the Player ID you wish to search for: "<<std::endl;
-         std::cin >> temp;
-         position = binarySearch(loadvector, temp);
+            int position;
 
-         if (position != -1)
-             std::cout <<"That player is NOT in the Top 100" << std::endl;
-         else
-             std::cout <<"That player is in the Top 100!"<< std::endl;
+            std::cout <<"Enter the Player ID you wish to search for: "<<std::endl;
+            std::cin >> temp;
+            //position = binarySearch(names,SIZE, nameID);
 
-     }
+            if (position != -1)
+                std::cout <<"That player is NOT in the Top 100" << std::endl;
             else
-                std::cout <<"Hope you enjoyed this program!";
-                std::cout <<std::endl;
+                std::cout <<"That player is in the Top 100!"<< std::endl;
 
-     } while (choice < 4);
+        }
+        else
+            std::cout <<"Hope you enjoyed this program!";
+        std::cout <<std::endl;
+
+    } while (choice < 4);
 
     return 0;
 }
@@ -90,28 +96,28 @@ void readFile(std::string name[], double winning[], const int ARRAYSIZE){
     std::ifstream iFile;
     int count = 0;
 
-    iFile.open("/media/linuxgorilla/5f8be082-3ff7-4e6b-b17b-107de17361cf/C++/Project3/fortnite.txt");
+    iFile.open("/Users/salyooi/untitled9/Project3/cmake-build-debug/fortnite.txt");
 
     while(count < ARRAYSIZE && iFile >> name[count] >> winning[count]){
-        std::cout << name[count] << " " << winning[count] << std::endl;
+        //std::cout << name[count] << " " << winning[count] << std::endl;
         count++;
     }
 }
 void menuFunction(int & select)
-    {
+{
 
-        std::cout << "Enter the number from the choices below:\n"
-                     "(1) Show the #1 and #100 player + winnings\n"
-                     "(2) Show Total and Average winnings\n"
-                     "(3) Find a player in Top 100 by ID\n"
-                     "(4) EXIT THIS PROGRAM" << std::endl;
-        std::cout << "Enter your choice: " << std::endl;
+    std::cout << "Enter the number from the choices below:\n"
+                 "(1) Show the #1 and #100 player + winnings\n"
+                 "(2) Show Total and Average winnings\n"
+                 "(3) Find a player in Top 100 by ID\n"
+                 "(4) EXIT THIS PROGRAM" << std::endl;
+    std::cout << "Enter your choice: " << std::endl;
+    std::cin >> select;
+    while (select < 1 || select > 4) {
+        std::cout << "That is an incorrect choice. Please try again. " << std::endl;
         std::cin >> select;
-        while (select < 1 || select > 4) {
-            std::cout << "That is an incorrect choice. Please try again. " << std::endl;
-            std::cin >> select;
-        }
     }
+}
 //sort and swap functions
 void sortNumbers(double array[], int size) {
     int maxNum;
@@ -140,29 +146,53 @@ void totalAverage(double winningNums[], const int size)
         total += winningNums[i];
     }
     average = total/size;
+    std::cout << std::fixed << std::showpoint << std::setprecision(2);
     std::cout << "Total winnings of all Top 100 players is: $" << total << std::endl;
     std::cout << std::endl;
     std::cout << "Average winnings of Top 100 players is: " << average << std::endl;
     std::cout << std::endl;
 }
-
-int binarySearch(const std::vector<std::string> &v, std::string str) {
-        int first = 0;
-        int last = v.size() - 1;
-        int middle;
-        int position = -1;
-        bool found = false;
-
-        while (!found && first <= last) {
-            middle = (first + last) / 2;
-            if (v[middle] == str) {
-                found = true;
-                position = middle;
-            } else if (v[middle] > str)
-                last = middle - 1;
-            else
-                first = middle + 1;
+int binarySearc(std::string arr[], std::string nameSearch, int size){
+    int first = 0;
+    int last = size - 1,
+            middle = 0;
+    int position = -1;
+    bool found = false;
+    while(!found && first <= last){
+        middle = (first + last) / 2;
+        if(arr[middle] == nameSearch){
+            found = true;
+            position = middle;
         }
-        return position;
+        else if(arr[middle] > nameSearch){
+            last = middle - 1;
+        }
+        else{
+            first = middle + 1;
+        }
+    }
+    return position;
+}
+int bubbleSort(std::string arr[], std::string findName, int arraySize){
+    std::cout << "Enter the Player ID you wish to search for: " << std::endl;
+    std::cin >> findName;
+    int maxNum;
+    int index;
+
+    for(maxNum = arraySize - 1; maxNum > 0; maxNum--){
+        for(index = 0; index < maxNum; index++){
+            if(arr[index] > arr[index + 1]){
+                swap(arr[index], arr[index + 1]);
+            }
+        }
     }
 
+    return binarySearc(arr, findName, arraySize);
+}
+
+void swap(int num1, int num2){
+
+    int temp = num1;
+    num1 = num2;
+    num2 = temp;
+}
